@@ -1,0 +1,112 @@
+/* src/styles/global.css */
+* {
+    box-sizing: border-box;
+  }
+  :root {
+    --clr-bg: rgb(209 250 229);
+    --clr-text: rgb(15 23 42);
+    --theme-bg-clr: rgb(15 23 42);
+    --theme-toggle-icon: rgb(15 23 42);
+    --theme-toggle-border: rgba(0 0 0 / 0.25);
+    --toggle-label-txt: "dark";
+  }
+  :root:has(input#theme:checked) {
+    --clr-txt: white;
+    --theme-toggle-light-scale: 1;
+    --theme-toggle-dark-scale: 0;
+    --theme-toggle-icon: white;
+    --theme-toggle-border: rgba(255 255 255 / 0.25);
+    --theme-toggle-rotate: 1turn;
+    --theme-bg-scale: 1.25;
+    --toggle-label-txt: "light";
+  }
+  body {
+    display: grid;
+    place-content: center;
+    place-items: center;
+    gap: 2rem;
+    height: 100vh;
+    font-family: system-ui;
+    font-size: 1rem;
+    color: var(--clr-txt);
+    background: var(--clr-bg);
+  }
+  /* hide checkbox */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  h1 {
+    font-size: 1.2rem;
+    transition: color 300ms ease-in-out;
+  }
+  .theme-toggle {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    padding: 1rem;
+    display: grid;
+    place-items: center;
+    transition: outline 150ms ease-in-out;
+    cursor: pointer;
+    border-radius: 50%;
+    outline: 1px solid var(--theme-toggle-border);
+    color: var(--theme-toggle-icon);
+  }
+  .theme-toggle::before {
+    content: var(--toggle-label-txt);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    translate: -50% var(--toggle-label-y, -10px);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    opacity: var(--toggle-label-opacity, 0);
+    transition-property: opacity, translate;
+    transition-duration: 150ms;
+    transition-timing-function: ease-in-out;
+  }
+  input#theme:focus-within ~ label,
+  .theme-toggle:hover {
+    outline-width: 10px;
+    --toggle-label-y: 20px;
+    --toggle-label-opacity: 1;
+  }
+  .theme-toggle > svg {
+    grid-area: 1/1;
+    transition: scale 300ms ease-in-out, rotate 500ms ease-in-out;
+    width: 100%;
+    height: 100%;
+    scale: var(--theme-toggle-dark-scale, 1);
+    rotate: var(--theme-toggle-rotate, 0turn);
+  }
+  .theme-toggle > svg:first-child {
+    scale: var(--theme-toggle-light-scale, 0);
+  }
+  
+  /* mask for dark theme */
+  .theme-mask {
+    position: fixed;
+    display: grid;
+    isolation: isolate;
+    overflow: hidden;
+    inset: 0;
+    grid-template-rows: repeat(25, 1fr);
+    pointer-events: none;
+    z-index: -1;
+  }
+  /* mask "cells" */
+  .theme-mask > div {
+    background-color: var(--theme-bg-clr);
+    scale: var(--theme-bg-scale, 0);
+    transition: all 300ms ease-in-out;
+    transition-delay: calc(var(--i) * 10ms);
+  }
+  
